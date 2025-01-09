@@ -33,6 +33,7 @@ public class Note {
     public void setNoteTitle(String noteTitle) {
         this.noteTitle = noteTitle;
     }
+
     @Override
     public String toString() {
         return "Note{id=" + id + ", title='" + noteTitle + "', content='" + noteContent + "'}";
