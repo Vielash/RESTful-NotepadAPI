@@ -9,17 +9,17 @@ import java.util.Set;
 public interface INoteRepository {
 
     //Read only
-    Note getNoteByTitle(String title);
+    Note getNoteByTitle(String noteTitle);
     Set<String> getAllNoteTitles();
     Collection<Note> getAllNoteObjects();
     //
 
     //CRUD without read
     boolean addNote(String newTitle, String newContent);
-    boolean deleteNoteByTitle(String title);
+    boolean deleteNoteByTitle(String noteTitle);
     boolean updateNoteContent(String checkTitle, String newContent);
     boolean updateNoteTitle(String checkTitle, String newTitle);
-    boolean doesNoteExist(String title);
+    boolean doesNoteExist(String noteTitle);
     //
 
 

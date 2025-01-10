@@ -13,12 +13,12 @@ public class NoteRepository implements INoteRepository {
     private Collection<Note> noteObjectCollection = titleToNoteMap.values();
 
     @Override
-    public Note getNoteByTitle(String title) {
-        return titleToNoteMap.get(title);
+    public Note getNoteByTitle(String noteTitle) {
+        return titleToNoteMap.get(noteTitle);
     }
 
     @Override
-    public Set<String> getAllNoteTitles() {
+    public Set<String> getAllNoteTitles() throws ConcurrentModificationException {
         return titleToNoteMap.keySet();
     }
 
@@ -37,8 +37,8 @@ public class NoteRepository implements INoteRepository {
     }
 
     @Override
-    public boolean deleteNoteByTitle(String title) {
-        return titleToNoteMap.remove(title) != null;
+    public boolean deleteNoteByTitle(String noteTitle) {
+        return titleToNoteMap.remove(noteTitle) != null;
     }
 
     @Override
@@ -64,8 +64,8 @@ public class NoteRepository implements INoteRepository {
         return false;
     }
     @Override
-    public boolean doesNoteExist(String title) {
-        return titleToNoteMap.containsKey(title);
+    public boolean doesNoteExist(String noteTitle) {
+        return titleToNoteMap.containsKey(noteTitle);
     }
 }
 
@@ -86,10 +86,10 @@ public class NoteRepository implements INoteRepository {
 //    private static List<Note> noteObjectList = new ArrayList<>();
 //
 //   @Override
-//   public Note getNoteByTitle(String title) {
-//    if (doesNoteExist(title)) {
+//   public Note getNoteByTitle(String noteTitle) {
+//    if (doesNoteExist(noteTitle)) {
 //        for (Note note : noteObjectList) {
-//            if (note.getNoteTitle().equals(title)) {
+//            if (note.getNoteTitle().equals(noteTitle)) {
 //                return note;
 //            }
 //        }
@@ -123,9 +123,9 @@ public class NoteRepository implements INoteRepository {
 //    }
 //
 //    @Override
-//    public boolean deleteNoteByTitle(String title) {
-//        if(doesNoteExist(title)) {
-//            noteObjectList.remove(getNoteByTitle(title));
+//    public boolean deleteNoteByTitle(String noteTitle) {
+//        if(doesNoteExist(noteTitle)) {
+//            noteObjectList.remove(getNoteByTitle(noteTitle));
 //            return true;
 //        }
 //        else
@@ -154,9 +154,9 @@ public class NoteRepository implements INoteRepository {
 //    }
 //
 //    @Override
-//    public boolean doesNoteExist(String title) {
+//    public boolean doesNoteExist(String noteTitle) {
 //        for (Note note : noteObjectList) {
-//            if (note.getNoteTitle().equals(title)) {
+//            if (note.getNoteTitle().equals(noteTitle)) {
 //                return true;
 //            }
 //        }
