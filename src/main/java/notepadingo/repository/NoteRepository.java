@@ -36,10 +36,12 @@ public class NoteRepository implements INoteRepository {
         return false;
     }
 
-    @Override
     public boolean deleteNoteByTitle(String noteTitle) {
-        return titleToNoteMap.remove(noteTitle) != null;
-    }
+        if (titleToNoteMap.containsKey(noteTitle)) {
+            titleToNoteMap.remove(noteTitle);
+            return true;
+        }
+        return false;    }
 
     @Override
     public boolean updateNoteContent(String checkTitle, String newContent) {

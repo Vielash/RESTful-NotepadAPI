@@ -1,10 +1,7 @@
 package notepadingo.exception;
 
-public class NoteNotFoundException extends RuntimeException {
+public class NoteNotFoundException extends NoteServiceException {
 
-    public NoteNotFoundException() {
-        super("Note does not found");
-    }
 
     public NoteNotFoundException(String exceptionMessage) {
         super(exceptionMessage);

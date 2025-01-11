@@ -11,7 +11,7 @@ public interface INoteService {
     //Read only
     Note getNoteByTitle(String noteTitle);
     Set<String> getAllNoteTitles();
-    Collection<Note> getAllNotes();
+    Collection<Note> getAllNoteObjects();
     //
 
     //CRUD without read
