@@ -1,20 +1,22 @@
 package notepadingo.service;
 
+import jakarta.ejb.Singleton;
+import jakarta.enterprise.context.ApplicationScoped;
 import notepadingo.exception.NoteAlreadyExistException;
 import notepadingo.exception.NoteNotFoundException;
 import notepadingo.exception.NoteServiceException;
 import notepadingo.model.Note;
 import notepadingo.repository.NoteRepository;
 
-import java.util.Collection;
-import java.util.ConcurrentModificationException;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+import static notepadingo.repository.NoteRepository.titleToNoteMap;
 
+@ApplicationScoped
 public class NoteService implements INoteService {
 
     NoteRepository repository = new NoteRepository();
+
 
     @Override
     public Note getNoteByTitle(String noteTitle) throws NoteNotFoundException, IllegalArgumentException {
@@ -30,7 +32,7 @@ public class NoteService implements INoteService {
         try {
             Note choosenNote = repository.getNoteByTitle(noteTitle);
             if (choosenNote == null) {
-                throw new NoteNotFoundException("Note with \"" + noteTitle + "\"title not found.");
+                throw new NoteNotFoundException("Note with \"" + noteTitle + "\" title not found.");
             }
             return choosenNote;
         }
@@ -38,6 +40,11 @@ public class NoteService implements INoteService {
         catch (RuntimeException e) {
             throw new NoteServiceException("Unexpected ERROR.",e);
         }
+    }
+
+    @Override
+    public Map<String,String> getAllNotes() {
+        return repository.getAllNotes();
     }
 
     @Override
@@ -159,16 +166,31 @@ public class NoteService implements INoteService {
 
     @Override
     public Note getLongestTitleNote() {
-        return null;
-    }
+        TreeSet<String> sortedByLenghtSet = new TreeSet<>(Comparator.comparingInt(String::length).reversed());
+        sortedByLenghtSet.addAll(getAllNoteTitles());
 
-    @Override
-    public boolean addNoteIfContentValid(String noteTitle, String content) {
-        return false;
+        String firstTitle = null;
+
+        Iterator<String> iterator = sortedByLenghtSet.iterator();
+        if(iterator.hasNext()) {
+             firstTitle = iterator.next();
+        }
+
+        if(firstTitle == null) {
+            throw new IllegalArgumentException("There isn't any note in here");
+        }
+        else
+            return getNoteByTitle(firstTitle);
     }
 
     @Override
     public List<Note> findNotesByKeyword(String keyword) {
-        return null;
+        List<Note> result = new ArrayList<>();
+        for (Note note : titleToNoteMap.values()) {
+            if (note.getNoteTitle().contains(keyword) || note.getNoteContent().contains(keyword)) {
+                result.add(note);
+            }
+        }
+        return result;
     }
 }

@@ -2,16 +2,15 @@ package notepadingo.repository;
 
 import notepadingo.model.Note;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public interface INoteRepository {
 
     //Read only
     Note getNoteByTitle(String noteTitle);
-    Set<String> getAllNoteTitles();
+    LinkedHashSet<String> getAllNoteTitles();
     Collection<Note> getAllNoteObjects();
+    Map<String,String> getAllNotes();
     //
 
     //CRUD without read

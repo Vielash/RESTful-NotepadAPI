@@ -4,6 +4,7 @@ import notepadingo.model.Note;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface INoteService {
@@ -12,6 +13,7 @@ public interface INoteService {
     Note getNoteByTitle(String noteTitle);
     Set<String> getAllNoteTitles();
     Collection<Note> getAllNoteObjects();
+    Map<String,String> getAllNotes();
     //
 
     //CRUD without read
@@ -24,7 +26,6 @@ public interface INoteService {
 
     //Specific Operations
     Note getLongestTitleNote();
-    boolean addNoteIfContentValid(String noteTitle, String content);
     List<Note> findNotesByKeyword(String keyword);
     //
 }

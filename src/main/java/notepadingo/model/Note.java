@@ -1,17 +1,12 @@
 package notepadingo.model;
 
 public class Note {
-    private int id;
     private String noteTitle;
     private String noteContent;
 
     public Note(String noteTitle, String noteContent) {
-        this.noteTitle = noteContent;
+        this.noteTitle = noteTitle;
         this.noteContent = noteContent;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getNoteContent() {
@@ -22,9 +17,6 @@ public class Note {
         return noteTitle;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public void setNoteContent(String noteContent) {
         this.noteContent = noteContent;
@@ -36,6 +28,6 @@ public class Note {
 
     @Override
     public String toString() {
-        return "Note{id=" + id + ", title='" + noteTitle + "', content='" + noteContent + "'}";
+        return "Note{title='" + noteTitle + "', content='" + noteContent + "'}";
     }
 }

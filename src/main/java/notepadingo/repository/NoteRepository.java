@@ -9,8 +9,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class NoteRepository implements INoteRepository {
 
-    private static Map<String, Note> titleToNoteMap = new ConcurrentHashMap<>();
+    public static Map<String, Note> titleToNoteMap = new ConcurrentHashMap<>();
     private Collection<Note> noteObjectCollection = titleToNoteMap.values();
+
+    static {
+        Note note = new Note("First", "Herkese merhabalar");
+        titleToNoteMap.put("First", note);
+
+        Note note1 = new Note("Second", "Konichiva all of you");
+        titleToNoteMap.put(note1.getNoteTitle(),note1);
+    }
 
     @Override
     public Note getNoteByTitle(String noteTitle) {
@@ -18,8 +26,19 @@ public class NoteRepository implements INoteRepository {
     }
 
     @Override
-    public Set<String> getAllNoteTitles() throws ConcurrentModificationException {
-        return titleToNoteMap.keySet();
+    public Map<String,String> getAllNotes() {
+        Map<String,String> titlesAndNotes = new ConcurrentHashMap<>();
+        for (Map.Entry<String, Note> entry : titleToNoteMap.entrySet()) {
+            String title = entry.getKey();
+            String content = entry.getValue().getNoteContent();
+            titlesAndNotes.put(title, content);
+        }
+        return titlesAndNotes;
+    }
+
+    @Override
+    public LinkedHashSet<String> getAllNoteTitles() {
+        return new LinkedHashSet<>(titleToNoteMap.keySet());
     }
 
     @Override
