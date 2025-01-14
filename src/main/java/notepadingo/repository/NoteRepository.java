@@ -66,7 +66,8 @@ public class NoteRepository implements INoteRepository {
     public boolean updateNoteContent(String checkTitle, String newContent) {
         Note choosenNote = getNoteByTitle(checkTitle);
         if (choosenNote != null) {
-            choosenNote.setNoteContent(newContent);
+            titleToNoteMap.remove(checkTitle);
+            titleToNoteMap.put(checkTitle, new Note(checkTitle,newContent));
             return true;
         }
         return false;
@@ -76,10 +77,8 @@ public class NoteRepository implements INoteRepository {
     public boolean updateNoteTitle(String checkTitle, String newTitle) {
         Note choosenNote = getNoteByTitle(checkTitle);
         if (choosenNote != null) {
-            titleToNoteMap.remove(checkTitle);
 
             choosenNote.setNoteTitle(newTitle);
-            titleToNoteMap.put(newTitle, choosenNote);
             return true;
         }
         return false;

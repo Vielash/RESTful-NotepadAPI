@@ -48,8 +48,8 @@ public class NoteService implements INoteService {
     }
 
     @Override
-    public Set<String> getAllNoteTitles(){
-        Set<String> allNoteTitles = repository.getAllNoteTitles();
+    public LinkedHashSet<String> getAllNoteTitles(){
+        LinkedHashSet<String> allNoteTitles = repository.getAllNoteTitles();
 
             return allNoteTitles;
     }
