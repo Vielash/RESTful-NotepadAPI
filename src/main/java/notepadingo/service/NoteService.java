@@ -136,10 +136,7 @@ public class NoteService implements INoteService {
         }
 
         try {
-            boolean isUpdated = repository.updateNoteTitle(currentTitle, newTitle);
-            if (!isUpdated) {
-                throw new NoteNotFoundException("Note with title '" + currentTitle + "' not found, or the new title '" + newTitle + "' is already in use.");
-            }
+             repository.updateNoteTitle(currentTitle, newTitle);
             return true;
         } catch (ConcurrentModificationException e) {
             throw new NoteServiceException("A concurrency issue occurred while updating the note title.", e);
@@ -167,7 +164,7 @@ public class NoteService implements INoteService {
     @Override
     public Note getLongestTitleNote() {
         TreeSet<String> sortedByLenghtSet = new TreeSet<>(Comparator.comparingInt(String::length).reversed());
-        sortedByLenghtSet.addAll(getAllNoteTitles());
+        sortedByLenghtSet.addAll(repository.getAllNoteTitles());
 
         String firstTitle = null;
 
@@ -180,7 +177,7 @@ public class NoteService implements INoteService {
             throw new IllegalArgumentException("There isn't any note in here");
         }
         else
-            return getNoteByTitle(firstTitle);
+            return repository.getNoteByTitle(firstTitle);
     }
 
     @Override

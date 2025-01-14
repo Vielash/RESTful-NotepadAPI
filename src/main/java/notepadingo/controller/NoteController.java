@@ -41,6 +41,11 @@ public class NoteController {
     public Note getNoteByTitle(@PathParam("title") String title) {
         return noteService.getNoteByTitle(title);
     }
+    @GET
+    @Path("longest")
+    public Note getLongestTitle() {
+        return noteService.getLongestTitleNote();
+    }
 
     @GET
     @Path("titles")
@@ -61,7 +66,7 @@ public class NoteController {
     }
 
     @POST
-    @Path("addNote/{title}/{content}")
+    @Path("/{title}/{content}")
     public Response createNoteByParameter(@PathParam("title")  String noteTitle,
                                           @PathParam("content") String noteContent,
                                           @Context UriInfo uriInfo) {
@@ -88,9 +93,25 @@ public class NoteController {
     @Path("/{title}/{content}")
     public Response replaceNoteContent(@PathParam("title") String title,
                                 @PathParam("content") String content,
-                                @Context UriInfo uriInfo) {
+                                @Context UriInfo uriInfo) throws JsonProcessingException {
+        try {
+            if(noteService.updateNoteContent(title, content)) {
 
+                String noteUri = uriInfo.getBaseUri() + "notes/" + title;
+                URI location = new URI(noteUri);
 
+                Map<String,String> responseMap = new HashMap<>();
+                responseMap.put("uri", location.toString());
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                String jsonResponse = objectMapper.writeValueAsString(responseMap);
+
+                return Response.created(location).entity(jsonResponse).build();
+            }
+        }catch (URISyntaxException e) {
+            throw new WebApplicationException("Not good URI ", e, Response.Status.BAD_REQUEST);
+        }
+        return Response.status(Response.Status.BAD_REQUEST).entity("cant create").build();
     }
 
     @PATCH
@@ -120,9 +141,14 @@ public class NoteController {
         return Response.status(Response.Status.BAD_REQUEST).entity("cant create").build();
     }
 
-
-
-
+    @DELETE
+    @Path("/{title}")
+    public Response deleteNote(@PathParam("title") String title, @Context UriInfo uriInfo) {
+        if (noteService.deleteNoteByTitle(title)) {
+            return Response.status(200).entity("Object has been deleted with that title: " + title).build();
+        }
+        return Response.status(400).entity("You couldnt delete sorry").build();
+    }
 
 
 }
